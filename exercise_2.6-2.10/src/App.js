@@ -4,6 +4,7 @@ import Person from './components/Person'
 const App = () => {
   const [persons, setPersons] = useState([
     {
+      id: 1,
       name: 'Arto Hellas',
       number: '852-12345678'
     }
@@ -39,6 +40,7 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
+      id: persons.length + 1,
     }
     setPersons(persons.concat(personObject))
     setNewName('')
@@ -47,6 +49,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter shown with <input />
+      </div>
+      <h3>Add New</h3>
       <form onSubmit={addPerson}>
         <div>
           name: <input onChange={handleNameInput} />
@@ -58,10 +64,10 @@ const App = () => {
           <button type="submit">add</button>
         </div>
       </form>
-      <h2>Numbers</h2>
+      <h3>Numbers</h3>
       {
         persons.map(person =>
-          <Person key={person.name} person={person} />
+          <Person key={person.id} person={person} />
         )
       }
     </div>
