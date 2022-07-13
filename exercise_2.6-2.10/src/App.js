@@ -4,7 +4,6 @@ import Person from './components/Person'
 const App = () => {
   const [persons, setPersons] = useState([
     {
-      id: 1,
       name: 'Arto Hellas'
     }
   ]);
@@ -16,9 +15,14 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
+
+    if (persons.some(e => e.name === newName)) {
+      alert(`${newName} is already added to the phonebook`);
+      return
+    }
+
     const personObject = {
       name: newName,
-      id: persons.length + 1
     }
     setPersons(persons.concat(personObject))
     setNewName('')
@@ -38,7 +42,7 @@ const App = () => {
       <h2>Numbers</h2>
       {
         persons.map(person =>
-          <Person key={person.id} person={person.name} />
+          <Person key={person.name} person={person.name} />
         )
       }
     </div>
