@@ -1,12 +1,24 @@
 import React from "react";
 import Person from "./Person";
 
-const Persons = ({ persons }) => {
-    return (
-        <div>
-            {persons.map(person => <Person key={person.id} person={person} />)}
-        </div>
-    )
+const Persons = ({ persons, allPersons, deletePerson }) => {
+    if (persons.length === 0) {
+        return (
+            <ul>
+                {allPersons.map((person, i) =>
+                    <Person key={i} person={person} deletePerson={deletePerson} />
+                )}
+            </ul>
+        )
+    } else {
+        return (
+            <ul>
+                {persons.map((person, i) =>
+                    <Person key={i} person={person} deletePerson={deletePerson} />
+                )}
+            </ul>
+        )
+    }
 }
 
 export default Persons;

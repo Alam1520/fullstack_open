@@ -6,6 +6,7 @@ import Filter from './components/Filter';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
+  const [allPersons, setAllPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
 
@@ -13,7 +14,7 @@ const App = () => {
     personService
       .getAll()
       .then(initialPersons => {
-        setPersons(initialPersons)
+        setAllPersons(initialPersons)
       })
   }, [])
 
@@ -51,9 +52,21 @@ const App = () => {
     personService
       .create(personObject)
       .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
+        setAllPersons(allPersons.concat(returnedPerson));
+        setNewName('');
+        setNewNumber('');
       })
+  }
+
+  const deletePerson = (id) => {
+    const filteredPerson = allPersons.filter(person => person.id === id);
+    const personName = filteredPerson[0].name;
+    const personId = filteredPerson[0].id;
+    if (window.confirm(`Delete ${personName} ?`)) {
+      personService
+        .remove(personId)
+      setAllPersons(allPersons.filter(person => person.id !== personId))
+    }
   }
 
   const handleSearchFilter = (event) => {
@@ -69,7 +82,7 @@ const App = () => {
       <h3>Add New</h3>
       <PersonForm addPerson={addPerson} handleNameInput={handleNameInput} handleNumberInput={handleNumberInput} newName={newName} newNumber={newNumber} />
       <h3>Numbers</h3>
-      <Persons persons={persons} />
+      <Persons persons={allPersons} allPersons={allPersons} deletePerson={deletePerson} />
     </div>
   )
 }
