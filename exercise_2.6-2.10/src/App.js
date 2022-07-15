@@ -73,7 +73,7 @@ const App = () => {
 
   const handleSearchFilter = (event) => {
     const searchValue = event.target.value;
-    const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(searchValue.toLowerCase()));
+    const filteredPersons = allPersons.filter(person => person.name.toLowerCase().includes(searchValue.toLowerCase()));
     setPersons(filteredPersons);
   }
 
@@ -84,7 +84,7 @@ const App = () => {
       <h3>Add New</h3>
       <PersonForm addPerson={addPerson} handleNameInput={handleNameInput} handleNumberInput={handleNumberInput} newName={newName} newNumber={newNumber} />
       <h3>Numbers</h3>
-      <Persons persons={allPersons} allPersons={allPersons} deletePerson={deletePerson} />
+      <Persons persons={persons} allPersons={allPersons} deletePerson={deletePerson} />
     </div>
   )
 }
