@@ -28,18 +28,20 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    if (persons.some(e => e.name === newName)) {
-      alert(`${newName} is already added to the phonebook`);
-      return
-    }
+    const person = allPersons.filter((person) =>
+      person.name === newName
+    )
 
-    if (persons.some(e => e.number === newNumber)) {
-      alert(`${newNumber} is already added to the phonebook`);
-      return
-    }
+    const personToAdd = person[0]
+    const updatedPerson = { ...personToAdd, number: newNumber }
 
-    if (newNumber === '') {
-      alert(`number can not be empty`);
+    if (window.confirm(`${personToAdd.name} is already added to the phonebook, replace the old number with a new one ?`)) {
+      personService
+        .update(updatedPerson.id, updatedPerson).then(returnedPerson => {
+          setAllPersons(allPersons.map(personItem => personItem.id !== personToAdd.id ? personItem : returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
       return
     }
 
