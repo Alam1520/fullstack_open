@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 let notes = [
     {
@@ -23,12 +24,8 @@ let notes = [
 ];
 
 app.use(express.json());
-
-const unknownEndpoint = (req, res) => {
-    res.status(404).send({ error: 'unknown endpoint' });
-}
-
-app.use(unknownEndpoint)
+app.use(cors());
+app.use(express.static('build'))
 
 const generateId = () => {
     const maxId = notes.length > 0 ? Math.max(...notes.map(n => n.id)) : 0;
@@ -81,7 +78,13 @@ app.post('/api/notes', (req, res) => {
     res.json(note)
 })
 
-const PORT = 3001;
+const unknownEndpoint = (req, res) => {
+    res.status(404).send({ error: 'unknown endpoint' });
+}
+
+app.use(unknownEndpoint)
+
+const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
