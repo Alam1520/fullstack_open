@@ -40,7 +40,10 @@ app.get('/api/persons', (req, res) => {
 })
 
 app.get('/info', (req, res) => {
+    const time = new Date();
 
+    const amount = `Phonebook has infor for ${people.length} people`
+    res.send(`<p>${amount}</p><p>${time}</p>`)
 })
 
 const PORT = 3001;
