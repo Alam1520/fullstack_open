@@ -59,6 +59,45 @@ app.get('/api/persons/:id', (req, res) => {
     }
 })
 
+app.delete('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id);
+    persons = persons.filter(person => person.id !== id);
+
+    return res.status(204).end();
+})
+
+app.post('/api/persons', (req, res) => {
+    const body = req.body;
+
+    if (!body.number) {
+        return res.status(400).json({
+            error: 'number is missing'
+        })
+    }
+
+    if (!body.name) {
+        return res.status(400).json({
+            error: 'name is missing'
+        })
+    }
+
+    if (persons.find(single => single.name === body.name)) {
+        return res.status(400).json({
+            error: 'name must be unique'
+        })
+    }
+
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: generateId(),
+    }
+
+    persons = persons.concat(person);
+
+    res.json(person)
+})
+
 const PORT = 3001;
 
 app.listen(PORT, () => {
